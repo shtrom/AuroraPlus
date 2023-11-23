@@ -26,7 +26,7 @@ of the error page and continue.
     {'id_token': 'ey...', 'access_token': 'ey...', 'token_type': 'bearer', ...}
 
 The `api` object is now ready to use. The token returned in the last step can be
-saved for later use when re-initialising the api object without having to follow
+saved for later use when re-initialising the `api` object without having to follow
 the OAuth flow to obtain a new authorisation.
 
 ### Connect to Aurora+ API with a pre-issued token
