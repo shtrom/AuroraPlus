@@ -4,7 +4,6 @@ from requests.adapters import HTTPAdapter
 from requests.exceptions import Timeout
 
 from requests_oauthlib import OAuth2Session
-from oauthlib.oauth2.rfc6749.errors import MissingTokenError
 
 
 class api:
