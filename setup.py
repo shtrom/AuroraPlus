@@ -43,7 +43,7 @@ getcurrent() gets the following data:
 An example getting specific data with getcurrent:
 
     import auroraplus
-    AuroraPlus = auroraplus.api({"access_token": "...", "token_type": "bearer"})
+    AuroraPlus = auroraplus.api(token={"access_token": "...", "token_type": "bearer"})
     AuroraPlus.get_info()
     if (not AuroraPlus.Error):
         AuroraPlus.getcurrent()
@@ -60,7 +60,7 @@ To get summary usage information use the following:
 An example getting specific data with getsummary:
 
     import auroraplus
-    AuroraPlus = auroraplus.api({"access_token": "...", "token_type": "bearer"})
+    AuroraPlus = auroraplus.api(token={"access_token": "...", "token_type": "bearer"})
     AuroraPlus.get_info()
     if (not AuroraPlus.Error):
         AuroraPlus.getsummary()
@@ -86,7 +86,7 @@ To get usage data use the following, this returns all available data in json for
 
 Full example:
 
-    AuroraPlus = auroraplus.api({"access_token": "...", "token_type": "bearer"})
+    AuroraPlus = auroraplus.api(token={"access_token": "...", "token_type": "bearer"})
     AuroraPlus.get_info()
     if (not AuroraPlus.Error):
         AuroraPlus.getcurrent()

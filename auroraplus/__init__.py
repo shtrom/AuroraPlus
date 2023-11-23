@@ -21,16 +21,34 @@ class api:
 
     SCOPE = ['openid', 'profile', 'offline_access']
 
-    def __init__(self, token=None):
-        """Initialise the API. 
+    def __init__(self,
+                 username: str = None, password: str = None,
+                 token: dict = None):
+        """Initialise the API.
 
         Parameters:
         -----------
 
+        username: str
+            Deprecated, kept for backward compatibility
+
+        password: str
+            Deprecated, kept for backward compatibility. If passed with an empty
+            username and no token, the password will be use as a bearer
+            access_token.
+
         token : dict
-            A pre-established token. Should contain at least an access_token and a token_type.
+            A pre-established token. It should contain at least an access_token
+            and a token_type.
+
         """
         self.Error = None
+        backward_compat = False
+        if not username and not token:
+            # Backward compatibility: if no username and no token,
+            # assume the passowrd is a bearer access token
+            token = {'access_token': password, 'token_type': 'bearer'}
+            backward_compat = True
         self.token = token
         api_adapter = HTTPAdapter(max_retries=2)
 
@@ -49,6 +67,15 @@ class api:
             'Connection': 'keep-alive',
         })
         self.session = session
+
+        if backward_compat:
+            self.get_info()
+
+    def get_token(self, username=None, password=None):
+        """
+        Deprecated, kept for backward compatibility
+        """
+        self.get_info()
 
     def get_info(self):
         """Get CustomerID and ServiceAgreementID"""
