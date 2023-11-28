@@ -167,7 +167,7 @@ class api:
 
         return r
 
-    def get_token(self, username=None, password=None):
+    def gettoken(self, username=None, password=None):
         """
         Deprecated, kept for backward compatibility
         """
