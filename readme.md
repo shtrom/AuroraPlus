@@ -25,9 +25,10 @@ of the error page and continue.
     >>> api.oauth_redirect('https://my.auroraenergy.com.au/login/redirect?state=...')
     {'id_token': 'ey...', 'access_token': 'ey...', 'token_type': 'bearer', ...}
 
-The `api` object is now ready to use. The token returned in the last step can be
-saved for later use when re-initialising the `api` object without having to follow
-the OAuth flow to obtain a new authorisation.
+The `api` object is now ready to use (start with `api.get_info()`. The token
+returned in the last step can be saved for later use when re-initialising the
+`api` object without having to follow the OAuth flow to obtain a new
+authorisation.
 
 ### Connect to Aurora+ API with a pre-issued token
 
