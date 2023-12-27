@@ -12,6 +12,37 @@ from requests_oauthlib import OAuth2Session
 
 
 class api:
+    '''
+    A client to interact with the Aurora+ API.
+
+    Obtaining a new OAuth token is done in two steps:
+
+        >>> import auroraplus
+        >>> api = auroraplus.api()
+        >>> api.oauth_authorize()
+        'https://customers.auroraenergy.com.au/...'
+
+    After following the prompts, the URL of the (error) page that's returned should be passed as the redirect URI.
+
+        >>> token = api.oauth_redirect('https://my.auroraenergy.com.au/login/redirect?state=...')
+
+    The `api` object is now authenticated.
+
+
+    Data can then be fetched with
+
+        >>> api.getcurrent()
+        >>> api.getday()
+        >>> api.getmonth()
+        >>> api.getquarter()
+        >>> api.getyear()
+
+    and inspected in, e.g.,
+
+        >>> api.day
+        {'StartDate': '2023-12-25T13:00:00Z', 'EndDate': '2023-12-26T13:00:00Z', 'TimeMeasureCount': 1, ...
+
+    '''
     USER_AGENT = 'python/auroraplus'
 
     OAUTH_BASE_URL = 'https://customers.auroraenergy.com.au' \
@@ -30,6 +61,15 @@ class api:
                  username: str = None, password: str = None,
                  token: dict = None):
         """Initialise the API.
+
+        An authenticated object can be recreated from a preexisting OAuth `token` with
+
+            >>> api = auroraplus.api(token)
+
+
+        Alternatively, a backward compatible way exists to only pass the `access_token`
+
+            >>> api = auroraplus.api(password=token['access_token'])
 
         Parameters:
         -----------
@@ -51,7 +91,7 @@ class api:
         backward_compat = False
         if not token and password and not username:
             # Backward compatibility: if no username and no token,
-            # assume the passowrd is a bearer access token
+            # assume the password is a bearer access token
             token = {'access_token': password, 'token_type': 'bearer'}
             backward_compat = True
         self.token = token

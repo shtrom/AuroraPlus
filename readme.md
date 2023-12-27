@@ -16,7 +16,7 @@ the AuroraPlus web application.
     >>> import auroraplus
     >>> api = auroraplus.api()
     >>> api.oauth_authorize()
-    'https://customers.auroraenergy.com.au/auroracustomers1p.onmicrosoft.com/b2c_1a_sign_in//oauth2/v2.0/authorize?response_type=code&client_id=2ff9da64-8629-4a92-a4b6-850a3f02053d&redirect_uri=https%3A%2F%2Fmy.auroraenergy.com.au%2Flogin%2Fredirect&scope=openid+profile+offline_access&state=...&client_info=1'
+    'https://customers.auroraenergy.com.au/auroracustomers1p.onmicrosoft.com/b2c_1a_sign_in//oauth2/v2.0/authorize?response_type=code&client_id=2ff9da64-8629-4a92-a4b6-850a3f02053d&redirect_uri=https%3A%2F%2Fmy.auroraenergy.coom.au%2Flogin%2Fredirect&scope=openid+profile+offline_access&state=...&client_info=1'
 
 Follow the URL above in a browser to authenticate with username+password and
 MFA. This will redirect to an error page (Cradle Mountain). Copy the full URL,
@@ -34,6 +34,13 @@ authorisation.
 
     import auroraplus
     AuroraPlus = auroraplus.api(token={"access_token": "...", "token_type": "bearer"})
+    AuroraPlus.get_info()
+
+For backward compatibility with users of the login/password method, the
+`access_token` can be passed as the `password` if the `user` is empty.
+
+    import auroraplus
+    AuroraPlus = auroraplus.api(password=<ACCESS_TOKEN>)
     AuroraPlus.get_info()
 
 ### Get current account information
