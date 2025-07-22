@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en-AU">
+<meta charset="utf-8">
+<title>Renew AuroraPlus token</title>
+<style>
+  :root {
+    --size: large;
+    --h1-size: xx-large;
+    --border-radius: 0.5em;
+    --sub-width: 95%;
+    --form-width: 90%;
+    --button-colour: green;
+    --button-bg: lightgreen;
+    ;
+  }
+
+  body,
+  html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    font-size: var(--size);
+  }
+
+  main {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    vertical-align: center;
+  }
+
+  section div {
+    border: thin solid;
+    border-radius: var(--border-radius);
+    margin: 1em;
+  }
+
+  h1 {
+    font-family: sans;
+    font-size: var(--h1-size);
+  }
+
+  img {
+    border: thin solid;
+    border-radius: var(--border-radius);
+    display: block;
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    max-width: 896px;
+    width: var(--sub-width);
+  }
+
+  input {
+    width: var(--form-width);
+  }
+
+  button {
+    background-color: var(--button-bg);
+    border: thin solid;
+    border-radius: var(--border-radius);
+    color: var(--button-colour);
+    height: 2em;
+    margin: 1ex;
+    width: var(--form-width);
+  }
+
+  .warning {
+    background-color: lightpink;
+    color: red;
+    width: var(--sub-width);
+  }
+
+  #login-page {
+    flex-grow: 1;
+    border: none;
+    width: 100%;
+  }
+</style>
+<script>
+  const OAUTH_BASE_URL = 'https://customers.auroraenergy.com.au'
+    + '/auroracustomers1p.onmicrosoft.com/b2c_1a_sign_in/';
+  const AUTHORIZE_URL = OAUTH_BASE_URL + '/oauth2/v2.0/authorize';
+  const TOKEN_URL = OAUTH_BASE_URL + '/oauth2/v2.0/token';
+  const CLIENT_ID = '2ff9da64-8629-4a92-a4b6-850a3f02053d';
+  const REDIRECT_URI = 'https://my.auroraenergy.com.au/login/redirect';
+
+  const API_URL = 'https://api.auroraenergy.com.au/api';
+  const BEARER_TOKEN_URL = API_URL + '/identity/LoginToken';
+
+  const SCOPE = ['openid', 'profile', 'offline_access'];
+
+  let code_verifier = null;
+
+  function authorise() {
+    document.getElementById("authorise").style.display = "none";
+    oauth_authorise().then(open);
+
+    document.getElementById('redirect_uri').value = "";
+    document.getElementById("redirect").style.display = "block";
+  }
+
+  function process_redirect() {
+    document.getElementById("redirect").style.display = "none";
+
+    const token = oauth_redirect(code_verifier, document.getElementById('redirect_uri').value);
+
+    const form = document.getElementById('access_token_form');
+    form.action = BEARER_TOKEN_URL;
+
+    const id_token_input = document.getElementById("id_token_input");
+    const button = document.getElementById("id_token_button");
+    token.then(token => {
+      console.log("token", token);
+      id_token_input.value = token.id_token;
+      button.disabled = false;
+    });
+
+    document.getElementById("access_token").style.display = "block";
+  }
+
+  async function oauth_authorise() {
+    const state = {
+      "id": uuidv4(),
+      "meta": {"interactionType": "redirect"}
+    };
+
+    // Not const, it's a global!
+    code_verifier = code();
+    console.debug('code_verifier', code_verifier);
+
+    const arr_code_verifier = (new TextEncoder()).encode(code_verifier);
+    const code_challenge = await crypto.subtle.digest(
+      'SHA-256',
+      arr_code_verifier
+    ).then(digest =>
+      btoa_urlsafe(String.fromCharCode(...new Uint8Array(digest)))
+    );
+    console.debug("code_challenge", code_challenge);
+
+    const auth_url = new URL(AUTHORIZE_URL);
+
+    auth_query_params = {
+      "response_type": "code",
+      "client_id": CLIENT_ID,
+      "redirect_uri": REDIRECT_URI,
+      "scope": SCOPE.join(" "),
+
+      "state": btoa(JSON.stringify(state)),
+      "code_challenge": code_challenge,
+      "code_challenge_method": 'S256',
+      "client_request_id": uuidv4(),
+      "client_info": 1
+    };
+
+    Object.keys(auth_query_params).forEach((k) =>
+      auth_url.searchParams.append(k, auth_query_params[k]))
+
+    console.log("auth_url", auth_url.toString());
+
+    return auth_url.toString();
+  }
+
+  function code() {
+    const CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+
+    return 'x'.repeat(43)
+      .replace(/[x]/g, function (c) {
+        return CHARS.charAt(Math.floor(Math.random() * CHARS.length));
+      });
+  }
+
+  function btoa_urlsafe(s) {
+    const BASE64_URLSAFE = {
+      '+': '-',
+      '/': '_',
+      '=': '',
+    };
+
+    return btoa(s).replace(/[+/=]/g, function (c) {
+      return BASE64_URLSAFE[c];
+    });
+  }
+
+  /* From [0].
+   * [0] https://www.geeksforgeeks.org/javascript/how-to-create-a-guid-uuid-in-javascript/
+   */
+  function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+      .replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0,
+          v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+  }
+
+  async function oauth_redirect(code_verifier, url) {
+    const parsed_url = new URL(url);
+    const code = parsed_url.searchParams.get("code");
+    console.debug("code", code);
+
+    const token_params = {
+      "grant_type": "authorization_code",
+      "code_verifier": code_verifier,
+      "code": code,
+      "redirect_uri": REDIRECT_URI,
+    };
+
+    const auth_header = {
+      'Authorization': 'Basic ' + btoa(CLIENT_ID + ":")
+    }
+
+    response = await fetch(TOKEN_URL, {
+      "method": "POST",
+      "headers": {
+        ...auth_header,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "body": new URLSearchParams(token_params),
+    });
+
+    return response.json();
+  }
+
+</script>
+<main>
+  <h1>Renew AuroraPlus token</h1>
+
+  <section>
+
+    <div id="authorise">
+      <p>Click the <em>Authorise</em> button, you will be taken to the login page for AuroraPlus.
+
+      <p>After logging in, you will get the Cradle Moutain error page.
+
+        <img src="cradle-mountain-error.png">
+
+      <p>Copy its entire URL from your browser's address bar, and come back to this page.
+
+        <br>
+        <button onclick="authorise()">Authorise</button>
+    </div>
+
+    <div id="redirect" style="display: none">
+
+      <img src="cradle-mountain-error.png">
+
+      <p>Enter the full URL of the Cradle Mountain error page.
+
+        <br>
+        <input id="redirect_uri">
+        <button onclick="process_redirect()">Submit</button>
+    </div>
+
+    <div id="access_token" style="display: none">
+      <p>Click the button to be taken to a JSON document containing your <code>id_token</code>.
+
+      <div class="warning"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus account
+        programatically.
+        <em>Do not give it to anyone</em>, even if they ask nicely.
+      </div>
+
+      <img src="json-accessToken.png">
+
+      <form id="access_token_form" action="" method="POST" type="application/json">
+        <input id="id_token_input" type="hidden" name="token">
+        <button id="id_token_button" type="submit" disabled="true">Retrieve Access Token</button>
+      </form>
+    </div>
+
+    <hr>
+  </section>
+</main>
