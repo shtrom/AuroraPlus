@@ -121,6 +121,8 @@
       console.log("token", token);
       id_token_input.value = token.id_token;
       button.disabled = false;
+
+      token_span = document.getElementById("id_token").innerText= token.id_token;
     });
 
     document.getElementById("access_token").style.display = "block";
@@ -260,12 +262,16 @@
     </div>
 
     <div id="access_token" style="display: none">
-      <p>Click the button to be taken to a JSON document containing your <code>id_token</code>.
+      <p>Your <code>id_token</code> is <code><span id="id_token">pending...</span></code></p>
 
       <div class="warning"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus account
         programatically.
         <em>Do not give it to anyone</em>, even if they ask nicely.
       </div>
+
+      <p>You can also retrieve your  <code>access_token</code>, but it's not
+      strictly necessary. Click the button to be taken to a JSON document
+      containing it.</p>
 
       <img src="json-accessToken.png">
 
