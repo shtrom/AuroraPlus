@@ -36,7 +36,7 @@
     vertical-align: center;
   }
 
-  section div {
+  section {
     border: thin solid;
     border-radius: var(--border-radius);
     margin: 1em;
@@ -239,9 +239,7 @@
 <main>
   <h1>Renew AuroraPlus token</h1>
 
-  <section>
-
-    <div id="authorise">
+    <section id="authorise">
       <p>Click the <em>Authorise</em> button, you will be taken to the login page for AuroraPlus.
 
       <p>After logging in, you will get the Cradle Moutain error page.
@@ -252,20 +250,20 @@
 
         <br>
         <button onclick="authorise()">Authorise</button>
-    </div>
+    </section>
 
-    <div id="redirect" style="display: none">
+    <section id="redirect" style="display: none">
 
       <img src="cradle-mountain-error.png">
 
       <p>Enter the full URL of the Cradle Mountain error page.
 
         <br>
-        <input id="redirect_uri">
+        <input id="redirect_uri" inputmode="url">
         <button onclick="process_redirect()">Submit</button>
-    </div>
+    </section>
 
-    <div id="access_token" style="display: none">
+    <section id="access_token" style="display: none">
       <p>Your <code>id_token</code> is <code><span id="id_token">pending...</span></code></p>
 
       <div class="warning"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus account
@@ -283,8 +281,6 @@
         <input id="id_token_input" type="hidden" name="token">
         <button id="id_token_button" type="submit" disabled="true">Retrieve Access Token</button>
       </form>
-    </div>
+    </section>
 
-    <hr>
-  </section>
 </main>
