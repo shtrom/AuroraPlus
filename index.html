@@ -84,9 +84,6 @@
     width: 100%;
   }
 
-  #id_token {
-    word-wrap: anywhere;
-  }
 </style>
 <script>
   const OAUTH_BASE_URL = 'https://customers.auroraenergy.com.au'
@@ -264,7 +261,8 @@
     </section>
 
     <section id="access_token" style="display: none">
-      <p>Your <code>id_token</code> is <code><span id="id_token">pending...</span></code></p>
+      <p>Your <code>id_token</code> is </p>
+      <textarea id="id_token" cols="80" rows="24">pending...</textarea>
 
       <div class="warning"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus account
         programatically.
