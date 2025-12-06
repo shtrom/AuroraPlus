@@ -123,7 +123,7 @@
       id_token_input.value = token.id_token;
       button.disabled = false;
 
-      token_span = document.getElementById("id_token").innerText= token.id_token;
+      token_span = document.getElementById("token").value = JSON.stringify(token);
     });
 
     document.getElementById("access_token").style.display = "block";
@@ -261,8 +261,8 @@
     </section>
 
     <section id="access_token" style="display: none">
-      <p>Your <code>id_token</code> is </p>
-      <textarea id="id_token" cols="80" rows="24">pending...</textarea>
+      <p>Your <code>token</code> is </p>
+      <textarea id="token" cols="80" rows="24">pending...</textarea>
 
       <div class="warning"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus account
         programatically.
