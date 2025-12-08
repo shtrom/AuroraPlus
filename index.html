@@ -55,7 +55,6 @@
     margin-top: 1em;
     margin-bottom: 1em;
     max-width: 896px;
-    width: var(--sub-width);
   }
 
   input {
@@ -239,9 +238,15 @@
     <section id="authorise">
       <p>Click the <em>Authorise</em> button, you will be taken to the login page for AuroraPlus.
 
+      <p>Make sure to check “Keep me logged in” to get a long-lived <code>RefreshToken</code>
+
+        <img src="keep-me-logged-in.png"
+		  alt="Screenshot of the aurora+ login screen, with an arrow reminder to check “Keep me logged in”">
+
       <p>After logging in, you will get the Cradle Moutain error page.
 
-        <img src="cradle-mountain-error.png">
+        <img src="cradle-mountain-error.png"
+		  alt="Screenshot of the aurora+ error page, with message “Off the Cradle Mountain Path!”">
 
       <p>Copy its entire URL from your browser's address bar, and come back to this page.
 
@@ -251,7 +256,8 @@
 
     <section id="redirect" style="display: none">
 
-      <img src="cradle-mountain-error.png">
+        <img src="cradle-mountain-error.png"
+		  alt="Screenshot of the aurora+ error page, with message “Off the Cradle Mountain Path!”">
 
       <p>Enter the full URL of the Cradle Mountain error page.
 
@@ -273,7 +279,8 @@
       strictly necessary. Click the button to be taken to a JSON document
       containing it.</p>
 
-      <img src="json-accessToken.png">
+      <img src="json-accessToken.png"
+		alt="Screenshot of a browser rendering a JSON document, with an arrow pointing to the `access_token` part; it also warns not to share this token with anyone">
 
       <form id="access_token_form" action="" method="POST" type="application/json">
         <input id="id_token_input" type="hidden" name="token">
