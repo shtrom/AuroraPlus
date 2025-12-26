@@ -71,6 +71,16 @@
     width: var(--form-width);
   }
 
+  .box {
+    margin: auto;
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+    width: var(--sub-width);
+  }
+
+  .info {
+    background-color: lightblue;
+  }
   .warning {
     background-color: lightpink;
     color: red;
@@ -123,15 +133,18 @@
 
     const id_token_input = document.getElementById("id_token_input");
     const button = document.getElementById("id_token_button");
+
     token.then(token => {
       console.log("token", token);
       id_token_input.value = token.id_token;
       button.disabled = false;
 
-      token_span = document.getElementById("token").value = JSON.stringify(token);
-    });
+      const token_json = JSON.stringify(token);
+      const token_span = document.getElementById("token").value = token_json;
+      navigator.clipboard.writeText(token_json);
 
-    document.getElementById("access_token").style.display = "block";
+      document.getElementById("access_token").style.display = "block";
+    });
   }
 
   async function oauth_authorise() {
@@ -269,12 +282,14 @@
 
         <br>
         <input id="redirect_uri" inputmode="url">
-        <button onclick="process_redirect()">Submit</button>
+        <button id="redirect_button" onclick="process_redirect()">Submit</button>
     </section>
 
     <section id="access_token" style="display: none">
       <p>Your <code>token</code> is </p>
       <textarea id="token" cols="80" rows="24">pending...</textarea>
+
+      <div class="info box">It has been automatically copied to your clipboard.</div>
 
       <div class="warning"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus account
         programatically.
