@@ -66,7 +66,7 @@
     border: thin solid;
     border-radius: var(--border-radius);
     color: var(--button-colour);
-    height: 2em;
+    height: 4em;
     margin: 1ex;
     width: var(--form-width);
   }
@@ -81,10 +81,10 @@
   .info {
     background-color: lightblue;
   }
+
   .warning {
     background-color: lightpink;
     color: red;
-    width: var(--sub-width);
   }
 
   #login-page {
@@ -92,7 +92,6 @@
     border: none;
     width: 100%;
   }
-
 </style>
 <script>
   const OAUTH_BASE_URL = 'https://customers.auroraenergy.com.au'
@@ -114,10 +113,10 @@
     oauth_authorise().then(open);
 
     document.getElementById('redirect_uri').value = "";
-    document.getElementById('redirect_uri').addEventListener("keypress", function(event) {
+    document.getElementById('redirect_uri').addEventListener("keypress", function (event) {
       if (event.key === "Enter") {
-	event.preventDefault();
-	document.getElementById("redirect_button").click();
+        event.preventDefault();
+        document.getElementById("redirect_button").click();
       }
     });
     document.getElementById("redirect").style.display = "block";
@@ -254,59 +253,60 @@
 <main>
   <h1>Renew AuroraPlus token</h1>
 
-    <section id="authorise">
-      <p>Click the <em>Authorise</em> button, you will be taken to the login page for AuroraPlus.
+  <section id="authorise">
+    <p>Click the <em>Authorise</em> button, you will be taken to the login page for AuroraPlus.
 
-      <p>Make sure to check “Keep me logged in” to get a long-lived <code>RefreshToken</code>
+    <p>Make sure to check “Keep me logged in” to get a long-lived <code>RefreshToken</code>
 
-        <img src="keep-me-logged-in.png"
-		  alt="Screenshot of the aurora+ login screen, with an arrow reminder to check “Keep me logged in”">
+      <img src="keep-me-logged-in.png"
+        alt="Screenshot of the aurora+ login screen, with an arrow reminder to check “Keep me logged in”">
 
-      <p>After logging in, you will get the Cradle Moutain error page.
+    <p>After logging in, you will get the Cradle Moutain error page.
 
-        <img src="cradle-mountain-error.png"
-		  alt="Screenshot of the aurora+ error page, with message “Off the Cradle Mountain Path!”">
+      <img src="cradle-mountain-error.png"
+        alt="Screenshot of the aurora+ error page, with message “Off the Cradle Mountain Path!”">
 
-      <p>Copy its entire URL from your browser's address bar, and come back to this page.
+    <p>Copy its entire URL from your browser's address bar, and come back to this page.
 
-        <br>
-        <button onclick="authorise()">Authorise</button>
-    </section>
+      <br>
+      <button onclick="authorise()">Authorise</button>
+  </section>
 
-    <section id="redirect" style="display: none">
+  <section id="redirect" style="display: none">
 
-        <img src="cradle-mountain-error.png"
-		  alt="Screenshot of the aurora+ error page, with message “Off the Cradle Mountain Path!”">
+    <img src="cradle-mountain-error.png"
+      alt="Screenshot of the aurora+ error page, with message “Off the Cradle Mountain Path!”">
 
-      <p>Enter the full URL of the Cradle Mountain error page.
+    <p>Enter the full URL of the Cradle Mountain error page.
 
-        <br>
-        <input id="redirect_uri" inputmode="url">
-        <button id="redirect_button" onclick="process_redirect()">Submit</button>
-    </section>
+      <br>
+      <input id="redirect_uri" inputmode="url">
+      <button id="redirect_button" onclick="process_redirect()">Submit</button>
+  </section>
 
-    <section id="access_token" style="display: none">
-      <p>Your <code>token</code> is </p>
-      <textarea id="token" cols="80" rows="24">pending...</textarea>
+  <section id="access_token" style="display: none">
+    <p>Your <code>token</code> is </p>
+    <textarea id="token" cols="80" rows="24">pending...</textarea>
 
-      <div class="info box">It has been automatically copied to your clipboard.</div>
+    <div class="info box">It has been automatically copied to your clipboard.</div>
 
-      <div class="warning"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus account
-        programatically.
-        <em>Do not give it to anyone</em>, even if they ask nicely.
-      </div>
+    <div class="warning box"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus
+      account
+      programatically.
+      <em>Do not give it to anyone</em>, even if they ask nicely.
+    </div>
 
-      <p>You can also retrieve your  <code>access_token</code>, but it's not
+    <p>You can also retrieve your <code>access_token</code>, but it's not
       strictly necessary. Click the button to be taken to a JSON document
       containing it.</p>
 
-      <img src="json-accessToken.png"
-		alt="Screenshot of a browser rendering a JSON document, with an arrow pointing to the `access_token` part; it also warns not to share this token with anyone">
+    <img src="json-accessToken.png"
+      alt="Screenshot of a browser rendering a JSON document, with an arrow pointing to the `access_token` part; it also warns not to share this token with anyone">
 
-      <form id="access_token_form" action="" method="POST" type="application/json">
-        <input id="id_token_input" type="hidden" name="token">
-        <button id="id_token_button" type="submit" disabled="true">Retrieve Access Token</button>
-      </form>
-    </section>
+    <form id="access_token_form" action="" method="POST" type="application/json">
+      <input id="id_token_input" type="hidden" name="token">
+      <button id="id_token_button" type="submit" disabled="true">Retrieve Access Token</button>
+    </form>
+  </section>
 
 </main>
