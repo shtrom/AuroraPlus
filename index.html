@@ -104,6 +104,12 @@
     oauth_authorise().then(open);
 
     document.getElementById('redirect_uri').value = "";
+    document.getElementById('redirect_uri').addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+	event.preventDefault();
+	document.getElementById("redirect_button").click();
+      }
+    });
     document.getElementById("redirect").style.display = "block";
   }
 
