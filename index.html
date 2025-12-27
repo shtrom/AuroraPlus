@@ -254,7 +254,9 @@
   <h1>Renew AuroraPlus token</h1>
 
   <section id="authorise">
-    <p>Click the <em>Authorise</em> button, you will be taken to the login page for AuroraPlus.
+    <p>Click the <em>Start authorisation</em> button, you will be taken to the login page for AuroraPlus.
+
+    <button onclick="authorise()">Start authorisation</button>
 
     <p>Make sure to check “Keep me logged in” to get a long-lived <code>RefreshToken</code>
 
@@ -268,27 +270,25 @@
 
     <p>Copy its entire URL from your browser's address bar, and come back to this page.
 
-      <br>
-      <button onclick="authorise()">Authorise</button>
   </section>
 
   <section id="redirect" style="display: none">
 
-    <img src="cradle-mountain-error.png"
-      alt="Screenshot of the aurora+ error page, with message “Off the Cradle Mountain Path!”">
-
     <p>Enter the full URL of the Cradle Mountain error page.
 
-      <br>
-      <input id="redirect_uri" inputmode="url">
-      <button id="redirect_button" onclick="process_redirect()">Submit</button>
+    <input id="redirect_uri" inputmode="url">
+    <button id="redirect_button" onclick="process_redirect()">Submit</button>
+
+    <img src="cradle-mountain-error.png"
+	 alt="Screenshot of the aurora+ error page, with message “Off the Cradle Mountain Path!”">
+
   </section>
 
   <section id="access_token" style="display: none">
+    <div class="info box">The token has been automatically copied to your clipboard.</div>
+
     <p>Your <code>token</code> is </p>
     <textarea id="token" cols="80" rows="24">pending...</textarea>
-
-    <div class="info box">It has been automatically copied to your clipboard.</div>
 
     <div class="warning box"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus
       account
