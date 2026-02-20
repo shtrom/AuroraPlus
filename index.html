@@ -58,7 +58,11 @@
   }
 
   input {
-    width: var(--form-width);
+    border-radius: var(--border-radius);
+    height: 1.5em;
+    padding-bottom: 1ex;
+    padding-top: 1ex;
+    width: calc(var(--form-width) - var(--border-radius));
   }
 
   button {
