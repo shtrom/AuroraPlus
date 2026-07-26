@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en-AU">
-  <meta charset="utf-8">
-  <title>Renew AuroraPlus token</title>
-  <style>
-:root {
-  --size: large;
-  --h1-size: xx-large;
-  --border-radius: 0.5em;
-  --sub-width: 95%;
-  --form-width: 90%;
-  --button-colour: green;
-  --button-bg: lightgreen;
-  ;
-}
+<meta charset="utf-8">
+<title>Renew AuroraPlus token</title>
+<style>
+  :root {
+    --size: large;
+    --h1-size: xx-large;
+    --border-radius: 0.5em;
+    --sub-width: 95%;
+    --form-width: 90%;
+    --button-colour: green;
+    --button-bg: lightgreen;
+    ;
+  }
 
 * {
   font-size: var(--size);
@@ -298,12 +298,11 @@
       <p>Your <code>token</code> is </p>
       <textarea id="token" cols="80" rows="24">pending...</textarea>
 
-      <div class="warning box"><strong>Warning</strong> This token allows whoever has it to control your AuroraPlus
-	account
-	programatically.
-	<em>Do not give it to anyone</em>, even if they ask nicely.
+      <div class="warning box"><strong>Warning</strong>
+        <p>This token allows whoever has it to control your AuroraPlus account programatically.
+          <em>Do not give it to anyone</em>, even if they ask nicely.
+        </p>
       </div>
-
 
       <h3>Access token</h3>
 
@@ -315,8 +314,8 @@
 	   alt="Screenshot of a browser rendering a JSON document, with an arrow pointing to the `access_token` part; it also warns not to share this token with anyone">
 
       <form id="access_token_form" method="POST">
-	<input id="id_token_input" type="hidden" name="token">
-	<button id="id_token_button" type="submit" disabled>Retrieve Access Token</button>
+        <input id="id_token_input" type="hidden" name="token">
+        <button id="id_token_button" type="submit" disabled>Retrieve Access Token</button>
       </form>
     </section>
 
